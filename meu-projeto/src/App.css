@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.App-personalizado{
+  border-radius: 50%;
+  border: 2px solid #61dafb;
+}
+
+body{
+  margin-top: 50px;
+  background-color: #a7bde7;
+}
