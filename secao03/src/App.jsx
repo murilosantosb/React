@@ -1,4 +1,5 @@
 import './App.css'
+import { useState } from 'react'
 
 import City from './assets/city.jpg'
 import ManageData from './components/ManageData'
@@ -8,9 +9,34 @@ import ConditionalRender from './components/ConditionalRender'
 import ShowUserName from './components/ShowUserName'
 import CarsDetails from './components/CarsDetails'
 import Container from './components/Container'
+import ExecuteFunction from './components/ExecuteFunction'
 
+import Message from './components/Message'
+import ChangeMessage from './components/ChangeMessage'
+
+import UserDetails from './components/UserDetails'
 
 function App() {
+
+  //Desafio 4 :
+  let pessoas = [
+    {nome:'Murilo',idade:17,profissao:'Programador'},
+    {nome:'Maria',idade:25,profissao:'Analista'},
+    {nome:'João',idade:28,profissao:'Desenvolvedor'},
+  ]
+
+
+  const [message,setMessage] = useState()
+
+  function handleMessage(msg){
+    
+  }
+
+
+  function showMessage(){
+    alert("Evento do componente pai")
+  }
+
   let person1 = {
     name: 'Murilo',
     age: 17 , 
@@ -76,7 +102,7 @@ function App() {
       <>
       {/* Loop em array de objetos */ }
       {cars.map((car)=>(
-        <CarsDetails id={car.id} brand={car.brand} color={car.color} newCar={car.newCar} km={car.km} />
+        <CarsDetails key={car.id} brand={car.brand} color={car.color} newCar={car.newCar} km={car.km} />
       ))}
       </>
 
@@ -89,6 +115,20 @@ function App() {
       <Container myValue="testing 2">
         <h3>Testando Container</h3>
       </Container>
+      </>
+
+      <>
+      <ExecuteFunction funcao={showMessage}/>
+      </>
+
+
+      <>
+      <Message message={message}/>
+      <ChangeMessage setMessage={setMessage}/>
+      </>
+
+      <>
+      <UserDetails Users={pessoas}/>
       </>
     </div>
 

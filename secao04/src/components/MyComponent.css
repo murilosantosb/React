@@ -1,0 +1,17 @@
+/* Ao realizamos estilos de componenetes para não vazar
+Devemos estilizar pelo nome da ClassName 
+*/ 
+
+button.btn{
+    height: 50px;
+    width: 100px;
+    border-radius: 15px;
+    border: none;
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: rgb(19, 206, 112);
+}
+
+.btn:hover{
+    background-color: rgb(15, 128, 0);
+}
