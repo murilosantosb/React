@@ -9,6 +9,7 @@ const MyForm = ({user}) => {
         console.log('Nome:', name)
         console.log('Email:',email)
         console.log('Bio:', bio)
+        console.log(role)
 
         //  Validação
         //  envio
@@ -19,9 +20,11 @@ const MyForm = ({user}) => {
         setBio("")
     }
 
+    const [role, setRole] = useState(user ? user.role : '')
+
     const [name,setName]= useState(user  ? user.name  : '')
     const [email,setEmail] = useState(user ? user.email : '')
-    const [bio,setBio] = useState("")
+    const [bio,setBio] = useState(user ? user.bio : '')
 
   return (
     <div>
@@ -55,7 +58,18 @@ const MyForm = ({user}) => {
             {/* 8 - textArea */}
             <label>
                 <span>Biografia</span>
-                <textarea name="bio" onChange={(e)=> setBio(e.target.value)}></textarea> 
+                <textarea value={bio} name="bio" onChange={(e)=> setBio(e.target.value)}></textarea> 
+                
+            </label>
+
+            {/* 9 - Select */}
+            <label>
+                <span>Função no sistema</span>
+                <select value={role} name="role" onChange={(e) => setRole(e.target.value)}>
+                    <option value="user">Usuário</option>
+                    <option value="editor">Editor</option>
+                    <option value="admin">Administrador</option>
+                </select>
             </label>
             <button className='btn_enviar'>Enviar</button>
         </form>

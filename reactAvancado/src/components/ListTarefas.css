@@ -1,0 +1,32 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.conteudo{
+    display: flex;
+    flex-direction: column;
+    line-height: 3em;
+}
+
+.conteudo button{
+    background-color: green;
+    height: 45px;
+    width: 150px;
+    margin: auto;
+    border: 2px solid white;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: white;
+    border-radius: 35px;
+}
+
+.tarefas{
+    border: 2px solid white;
+    margin-top: 15px;
+    height: 300px;
+    width: 500px;
+    border-radius: 15px;
+}
