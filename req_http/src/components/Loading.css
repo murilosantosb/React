@@ -1,0 +1,28 @@
+@keyframes loading{
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100%{
+        transform: rotate(365deg);
+    }
+}
+
+
+div.loadingContainer{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+span.carregando{
+    display: block;
+    height: 70px;
+    width: 70px;
+    border: 12px solid crimson;
+    border-top: 12px solid transparent;
+    border-radius: 50%;
+    animation: loading 1s linear infinite;
+}
+

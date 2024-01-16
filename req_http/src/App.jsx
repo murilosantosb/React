@@ -5,7 +5,8 @@ import './App.css'
 import { useState, useEffect } from 'react'
 
 
-
+//Componente
+import Loading from './components/Loading'
 
 
 // 4 - Custom hook
@@ -90,7 +91,7 @@ function App() {
       <h1>Lista de Produtos</h1>
 
       {/* 6 - loading */}
-      {loading && <p>Carregando dados...</p>}
+      {loading && <Loading/>}
       {error && (<h2>{error}</h2>)}
       {!error && (
         <div className='card'>
