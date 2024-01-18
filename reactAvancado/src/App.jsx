@@ -1,14 +1,27 @@
-import { useState } from 'react'
+
 import './App.css'
-import Condicional from './components/Condicional'
-import Contador from './components/Contador'
-import ListTarefas from './components/ListTarefas'
+import {BrowserRouter , Routes , Route} from 'react-router-dom'
+
+//Componentes
+import NavBar from './components/NavBar'
+
+//pages
+import Home from './pages/Home'
+import About from './pages/About'
 
 function App() {
+ 
+
+
  return(
-    <ListTarefas/>
+      <BrowserRouter>
+         <NavBar/>
+       <Routes>
+            <Route path='/' element={<Home/>} />
+           <Route path='/about' element={<About/>} />
+        </Routes>
+      </BrowserRouter>
  )
-  
   
 }
 
