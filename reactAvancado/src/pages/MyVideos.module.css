@@ -1,0 +1,61 @@
+.MyVideos{
+    background-image: linear-gradient(to left top  , #2F304B,#1C413F,  #18364C );
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.MyVideo{
+    background-color: white;
+    width: 700px;
+    border-radius: 20px;
+    padding: 30px;
+
+    display: grid;
+    grid-template-columns: 250px 320px auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.video{
+    background-image: linear-gradient(to top left  ,#185C9B , #0B79A3 );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    width: 200px;
+    height: 100px;
+}
+
+.icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #89B0CD;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.MyVideo a {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.MyVideo p {
+    color: gray;
+} 
+
+.videoTwo{
+    background-image: linear-gradient(to top left  ,#6E3B62 , #9F423F );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    width: 200px;
+    height: 100px;
+}

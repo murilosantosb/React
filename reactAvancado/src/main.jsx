@@ -7,15 +7,18 @@ import { CounterContextProvider } from './context/CounterContext.jsx'
 
 import { TitleColorContextProvider } from './context/TitleColorContext.jsx'
 
+import { ThemeContextProvider } from './context/BackgroundThemeContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-      <CounterContextProvider>
+         <ThemeContextProvider>
+         <CounterContextProvider>
 
          <TitleColorContextProvider>
-            <App />
+         <App />
          </TitleColorContextProvider>
 
-      </CounterContextProvider>
+         </CounterContextProvider>
+      </ThemeContextProvider>
   </React.StrictMode>,
 )
