@@ -6,7 +6,7 @@ const User = require("../models/User")
 // Insert a photo , with an user related to it
 const insertPhoto = async (req, res) => {
     const { title } = req.body
-    const image = req.file.body
+    const image = req.file.filename;
     console.log(req.body);
 
     const reqUser = req.user
@@ -76,7 +76,7 @@ const deletePhoto = async (req, res) => {
     const {id} = req.params
 
     const photos = await Photo.find({userId: id})
-        .sort([['createdAt', -1]])
+        .sort([["createdAt", -1]])
         .exec()
 
     return res.status(200).json(photos)    

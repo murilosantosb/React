@@ -48,6 +48,10 @@ const userUpdateValidation = () => {
             .optional()
             .isLength({min: 3})
             .withMessage("O nome precisa de pelo menos 3 caracteres."),
+        body("bio")  
+            .optional()
+            .isLength({min:10, max: 70})
+            .withMessage("A bio precisa de pelo menos 10 caracteres."), 
         body("password")
             .optional()
             .isLength({min: 5})

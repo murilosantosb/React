@@ -1,0 +1,17 @@
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+.loading-home {
+   animation: loading infinite 0.8s linear;
+
+   height: 300px;
+   width: 300px;
+   border: 4px solid rgb(0, 81, 255);
+}

@@ -70,7 +70,7 @@ input[type="submit"] {
 }
 
 input:disabled {
-  cursor: pointer;
+  cursor: no-drop;
   background-color: #000;
 }
 

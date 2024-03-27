@@ -19,7 +19,8 @@ router.put("/",
     userUpdateValidation(),
     validate,
     imageUpload.single("profileImage"),
-    update )
+    update 
+    )
 router.get("/:id", getUserById)    
 
 module.exports = router
