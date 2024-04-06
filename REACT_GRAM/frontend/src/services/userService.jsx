@@ -50,10 +50,44 @@ const getUserDetails = async (id) => {
     }
 }
 
+const following = async (id, token) => {
+    
+    const config = requestConfig("PUT", null, token)
+
+    try {
+        
+        const res = await fetch(api + "/users/followers/" + id, config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+            return res;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const unfollow = async (id, token) => {
+
+    const config = requestConfig("DELETE", null, token)
+
+    try {
+        
+        const res = await fetch(api + "/users/unfollow/" + id, config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+            return res;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const userService = {
     profile,
     updateProfile,
     getUserDetails,
+    following,
+    unfollow
 }
 
 export default userService

@@ -4,16 +4,17 @@ import { uploads } from '../../utils/config'
 
 //Components
 import Message from "../../components/Message"
+import Loading from "../../components/Loading"
 import { Link } from "react-router-dom"
 import { BsFillEyeFill, BsPencilFill, BsXLg } from 'react-icons/bs'
 
 // hooks
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 // redux
-import {getUserDetails} from '../../slices/userSlice'
+import {getUserDetails, following, unfollow} from '../../slices/userSlice'
 import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto } from "../../slices/photoSlice"
 
 const Profile = () => {
@@ -21,9 +22,9 @@ const Profile = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
 
-    const {user, loading} = useSelector((state) => state.user)
+    const {user, loading, message: messageUser} = useSelector((state) => state.user)
     const {user: userAuth} = useSelector((state) => state.auth)
-    const {photos, loading:loadingPhoto , error: errorPhoto, message: messagePhoto} = useSelector((state) => state.photo)
+    const {photos, photo, loading:loadingPhoto , error: errorPhoto, message: messagePhoto} = useSelector((state) => state.photo)
 
     const [title, setTitle] = useState("")
     const [image, setImage] = useState("")
@@ -31,6 +32,8 @@ const Profile = () => {
     const [editTitle, setEditTitle] = useState("")
     const [editImage, setEditImage] = useState("")
     const [editId, setEditId] = useState("")
+
+    const [isFollowing, setIsFollowing] = useState(false)
 
 
     // New form and edit form ref
@@ -121,10 +124,30 @@ const Profile = () => {
     const handleCancelEdit = (e) => {
         hideOrShowForms()
     }
+
+    const handleFollow = async () => {
+        try {
+            await dispatch(following(id))
+            // setIsFollowing(true)
+            dispatch(getUserDetails(id))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleUnfollow = async () => {
+        try{
+            await dispatch(unfollow(id))
+            setIsFollowing(false)
+            await dispatch(getUserDetails(id))
+        }catch (error) {
+            console.log(error)
+        }
+    } 
    
 
     if(loading){
-        return <p>Carregando...</p>
+        return <Loading />
     }
 
   return (
@@ -134,7 +157,29 @@ const Profile = () => {
                 <img src={`${uploads}/users/${user.profileImage}`} alt={user.name} />
             )}
             <div className="profile-description">
+                <span>
                 <h2>{user.name}</h2>
+
+                {id !== userAuth._id && user.followers && !user.followers.includes(userAuth._id) && (
+                    <button className="btn" onClick={handleFollow}>Seguir</button>
+                )}
+                {!isFollowing && id !== userAuth._id && user.followers && user.followers.includes(userAuth._id) && (
+                    <button className="unfollower" onClick={handleUnfollow}>Seguindo</button>
+                )}
+                {/* {messageUser && <Message msg={messageUser} type="success" />} */}
+
+
+                </span>
+
+                <div className="info-user">
+                    {user && (
+                        <>
+                            <p>{user.posts ? user.posts.length : 0} Publicações</p>
+                            <p>{user.followers ? user.followers.length : 0} Seguidores</p>
+                            <p>{user.following ? user.following.length : 0} Seguindo</p>
+                        </>
+                    )}
+                </div>
                 <p>{user.bio}</p>
             </div>
         </div>
@@ -206,7 +251,7 @@ const Profile = () => {
                             <BsXLg onClick={() => handleDelete(photo._id)}/>
                         </div>
                     ) : (
-                        <Link className="btn" to={`/photos/${photo._id}`}>
+                        <Link className="btn no-user" to={`/photos/${photo._id}`}>
                             ver
                         </Link>
                     )}

@@ -8,7 +8,7 @@ import {
     BsFillPersonFill,
     BsFillCameraFill,
     } from 'react-icons/bs'
-
+    import { FaMessage } from "react-icons/fa6";
 //hooks
 import { useAuth } from "../hooks/useAuth"
 import { useState } from "react"
@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom"
 import {reset, logout} from '../slices/authSlice'
 
 const NavBar = () => {
+    const [query, setQuery] = useState("")
+
     const { auth } = useAuth()
     const { user } = useSelector(state => state.auth)
 
@@ -31,12 +33,24 @@ const NavBar = () => {
         navigate("/login")
     }
 
+    const handleSearch = (e) => {
+        e.preventDefault()
+
+        if(query) {
+            return navigate(`/search?q=${query}`)
+        }
+    }
+
   return (
     <nav id="nav">
         <Link to='/'>ReactGram</Link>
-        <form id="search-form">
+        <form id="search-form" onSubmit={handleSearch}>
             <BsSearch/>
-            <input type="text" placeholder="Pesquisar"/>
+            <input
+            type="text"
+            placeholder="Pesquisar"
+            onChange={(e) => setQuery(e.target.value)}
+            />
         </form>
         <ul id="nav-links">
             <li>
@@ -62,6 +76,12 @@ const NavBar = () => {
                     <li>
                         <NavLink to={`/users/${user._id}`}>
                             <BsFillCameraFill/>
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/messages">
+                            <FaMessage size={20}/>
                         </NavLink>
                     </li>
 

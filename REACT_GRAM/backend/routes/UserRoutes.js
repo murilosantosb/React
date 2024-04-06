@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 // Controller
-const { register, login, getCurrentUser, update, getUserById} = require("../controllers/UserController")
+const { register, login, getCurrentUser, update, getUserById, following, unfollow} = require("../controllers/UserController")
 
 // Middlewares
 const validate = require('../middlewares/handleValidation')
@@ -21,6 +21,9 @@ router.put("/",
     imageUpload.single("profileImage"),
     update 
     )
-router.get("/:id", getUserById)    
+router.get("/:id", getUserById)   
+
+router.put("/followers/:id", authGuard, following)
+router.delete("/unfollow/:id", authGuard, unfollow)
 
 module.exports = router

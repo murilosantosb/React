@@ -11,6 +11,7 @@ import {profile, resetMessage, updateProfile} from '../../slices/userSlice'
 
 //Components
 import Message from '../../components/Message'
+import Loading from "../../components/Loading"
 
 const EditProfile = () => {
     const dispatch = useDispatch()
@@ -86,6 +87,10 @@ const EditProfile = () => {
 
         // update image state
         setProfileImage(image)
+    }
+
+    if (loading) {
+        return <Loading/>
     }
 
   return (

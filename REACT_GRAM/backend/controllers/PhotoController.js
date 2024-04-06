@@ -11,6 +11,7 @@ const insertPhoto = async (req, res) => {
 
     const reqUser = req.user
     const user = await User.findById(reqUser._id)
+    // const photo = await Photo.findById(reqUser._id)
 
     // Create a photo
     const newPhoto = await Photo.create({
@@ -20,15 +21,18 @@ const insertPhoto = async (req, res) => {
         userName: user.name,
     })
 
+
     // If photo was created successfully , return data
-    if(!newPhoto){
+    if(newPhoto){
+       user.posts.push(newPhoto._id)
+       await user.save()
+       res.status(201).json(newPhoto)
+    }else{
         res.status(422).json({
             errors: ["Houve um problema , por favor tente novamente mais tarde!"]
         })
-        return
     }
 
-    res.status(201).json(newPhoto)
 }
 
 // Remove a photo from DB
@@ -52,9 +56,16 @@ const deletePhoto = async (req, res) => {
         .json({ errors: ["Ocorreu um erro, tente novamente mais tarde"] });
       return
     }
-  
+
+    const user = await User.findById(reqUser._id)
+    const index = user.posts.indexOf(id)
+    if (index !== -1) {
+        user.posts.splice(index, 1)
+        await user.save()
+    }
+    
     await Photo.findByIdAndDelete(photo._id);
-  
+    
     res
       .status(200)
       .json({ id: photo._id, message: "Foto excluída com sucesso." });

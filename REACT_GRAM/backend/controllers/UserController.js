@@ -140,14 +140,90 @@ const getUserById = async(req, res) => {
         return
     }
 
-
-   
 }
+
+const following = async(req, res) => {
+
+    const { id } = req.params
+    const { followers } = req.body
+    const followerId = req.user._id
+
+    try {
+
+        // Buscar o Id do usuário que eu quero seguir
+        const userToFollow = await User.findById(id)
+        // Buscar o meu Id
+        const follower = await User.findById(followerId)
+
+        const user = await User.findById(new mongoose.Types.ObjectId(id))
+        .select("-password")
+
+        if(!userToFollow || !follower) {
+            return res.status(404).json({errors: ["Usuário não encontrado"]})
+        }
+
+        if(userToFollow.followers.includes(followerId) && follower.following.includes(id)){
+          return res.status(409).json({errors: ["Você já está seguindo este usuário."]})
+        }
+
+        if(followers){
+            user.followers = followers
+        }
+        
+        userToFollow.followers.push(followerId)
+        await userToFollow.save()
+        
+        follower.following.push(user._id)
+        await follower.save()
+
+        await user.save()
+
+        res.status(200).json({userId: followerId, user: user ,message: "Você começou a seguir esse usuário."})
+        
+
+    } catch (error) {
+        res.status(500).json({ errors: ["Não foi possível seguir o usuário."] })
+    }
+}
+
+const unfollow = async (req, res) => {
+
+    const { id } = req.params
+
+    const reqUser = req.user
+
+    try {
+        
+        const userIWantToUnfollow = await User.findById(id).select("-password");
+        const myUser = await User.findById(reqUser._id).select("-password");
+
+
+        if (!userIWantToUnfollow || !myUser) {
+           return res.status(404).json({errors: ["Você não seguir este usuário."]})
+        }
+
+        myUser.following = myUser.following.filter(followingId => followingId.toString() !== id.toString())
+        await myUser.save()
+
+        userIWantToUnfollow.followers = userIWantToUnfollow.followers.filter(followerId => followerId.toString() !== reqUser._id.toString())
+        await userIWantToUnfollow.save()
+
+        res.status(200).json({userId: reqUser._id ,message: "Você parou de seguir com sucesso!"})
+        
+
+    } catch (error) {
+        res.status(404).json({errors: ["Usuário não encontrado!"]})
+    }
+
+}
+
 
 module.exports = {
     register, 
     login,
     getCurrentUser,
     update,
-    getUserById
+    getUserById,
+    following,
+    unfollow
 }

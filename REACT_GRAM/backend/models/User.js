@@ -8,6 +8,9 @@ const userSchema = new Schema(
         password: String,
         profileImage: String,
         bio: String ,
+        posts: Array,
+        followers: Array,
+        following: Array,
     },
     {
         timestamps: true

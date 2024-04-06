@@ -9,19 +9,24 @@ import Login from './pages/Auth/Login'
 import EditProfile from './pages/EditProfile/EditProfile'
 import Profile from './pages/Profile/Profile'
 import Photo from './pages/Photo/Photo'
+import Search from './pages/Search/Search'
+import Messages from './pages/Messages/Messages'
+
 //Componentes
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
+import Loading from './components/Loading'
 
 //hooks
 import { useAuth } from './hooks/useAuth'
+
 
 
 function App() {
   const {auth, loading} = useAuth()
 
   if(loading){
-    return <p>Carregando...</p>
+    return <Loading/>
   }
 
 
@@ -50,6 +55,14 @@ function App() {
             <Route
              path='/login'
              element={!auth ? <Login/> : <Navigate to="/" />}
+             />
+             <Route 
+              path="/search"
+              element={auth ? <Search /> : <Navigate to="/login" />}
+             />
+             <Route 
+              path='/messages'
+              element={auth ? <Messages/> : <Navigate to="/login"/>}
              />
             <Route path="/photos/:id" element={<Photo/>}/>
           </Routes>

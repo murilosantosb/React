@@ -44,7 +44,7 @@
 
 
 
-@media (max-width: 600px){
+@media (min-width: 300px) and (max-width: 1000px){
     #login,
 #register {
     border: 1px solid #363636;
