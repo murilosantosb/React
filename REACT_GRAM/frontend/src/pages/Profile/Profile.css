@@ -77,6 +77,7 @@ div.info-user{
     gap: 50px;
 }
 
+
 @media (min-width: 300px) and (max-width: 800px){
     #profile {
         width: 80%;
@@ -114,6 +115,14 @@ div.info-user{
         margin: 0.3%;
         margin-top: 15px;
     }
+
+    .profile-description span {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+    }
+    
 }
 
 @media (min-width: 801px) and (max-width: 992px){

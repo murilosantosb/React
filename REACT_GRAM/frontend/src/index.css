@@ -98,3 +98,18 @@ input[type="submit"]:hover {
 .hide {
   display: none;
 }
+
+input.input-form {
+  color: #0094f6;
+  font-size: 15px !important;
+  width: 80px !important;
+}
+
+input.input-form:hover {
+  color: #64b6ec;
+}
+
+
+svg {
+  cursor: pointer;
+}

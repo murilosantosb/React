@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 // Controllers
-const {sendMessage, deleteMessage} = require("../controllers/MessageController")
+const {sendMessage, deleteMessage, getAllContacts} = require("../controllers/MessageController")
 
 
 // Middlewares
@@ -11,7 +11,7 @@ const {sendMessageValidation} = require("../middlewares/messageValidation")
 
 // Routes
 router.post("/sendmessage/:id", authGuard, sendMessageValidation(), sendMessage )
-router.get("/:id", authGuard, )
+router.get("/:id", authGuard, getAllContacts)
 router.delete("/:id", authGuard, deleteMessage)
 
 module.exports = router

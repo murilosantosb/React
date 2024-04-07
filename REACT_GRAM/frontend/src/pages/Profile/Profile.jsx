@@ -168,7 +168,9 @@ const Profile = () => {
                 )}
                 {/* {messageUser && <Message msg={messageUser} type="success" />} */}
 
-
+               {id !== userAuth._id && (
+                 <Link className="btn unfollower" to={`/messages/${id}`}>Enviar mensagem</Link>
+               )}
                 </span>
 
                 <div className="info-user">

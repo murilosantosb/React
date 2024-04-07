@@ -11,6 +11,7 @@ import Profile from './pages/Profile/Profile'
 import Photo from './pages/Photo/Photo'
 import Search from './pages/Search/Search'
 import Messages from './pages/Messages/Messages'
+import MessagesUser from './pages/Messages/MessagesUser'
 
 //Componentes
 import NavBar from './components/NavBar'
@@ -19,7 +20,6 @@ import Loading from './components/Loading'
 
 //hooks
 import { useAuth } from './hooks/useAuth'
-
 
 
 function App() {
@@ -61,13 +61,17 @@ function App() {
               element={auth ? <Search /> : <Navigate to="/login" />}
              />
              <Route 
-              path='/messages'
+              path='/contacts/:id'
               element={auth ? <Messages/> : <Navigate to="/login"/>}
+             />
+             <Route 
+              path='/messages/:id'
+              element={auth ? <MessagesUser/> : <Navigate to="/login"/>}
              />
             <Route path="/photos/:id" element={<Photo/>}/>
           </Routes>
          </div>
-       <Footer/>
+         <Footer/>
       </BrowserRouter>
     </div>
   )

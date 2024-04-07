@@ -80,7 +80,7 @@ const NavBar = () => {
                     </li>
 
                     <li>
-                        <NavLink to="/messages">
+                        <NavLink to={`/contacts/${user._id}`}>
                             <FaMessage size={20}/>
                         </NavLink>
                     </li>

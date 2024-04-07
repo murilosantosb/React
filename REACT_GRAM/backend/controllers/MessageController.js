@@ -49,7 +49,33 @@ const deleteMessage = async (req, res) => {
 }
 
 
+const getAllContacts = async (req, res) => {
+    const { id } = req.params
+
+    
+
+    try {
+
+        const user = await User.findById(id)
+
+        if(!user) {
+            return res.status(404).json({ errors: ["Usuário não encontrado!"] })
+        }
+        
+        const myContacts = user.following.map((data) => data)
+
+        const contactsData = await User.find({ _id: { $in: myContacts } }).select("_id name profileImage")
+
+        res.status(200).json(contactsData)
+
+    } catch (error) {
+        res.status(500).json({ errors: ["Erro ao buscar contatos!"] })
+    }
+}
+
+
 module.exports = {
     sendMessage,
     deleteMessage,
+    getAllContacts
 }
