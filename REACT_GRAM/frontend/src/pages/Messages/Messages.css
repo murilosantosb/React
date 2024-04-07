@@ -1,5 +1,9 @@
 div.contacts-container{
-
+    border-right: 1px solid #363636;
+    border-left: 1px solid #363636;
+    height: 70vh;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 header.header-contacts {
@@ -16,3 +20,29 @@ header.header-contacts span{
     gap: 15px;
 }
 
+
+
+section.select-contacts h1 {
+    margin-left: 10px;
+}
+
+span.my-contact {
+    display: grid;
+    grid-template-columns: 100px 70px;
+    grid-template-rows: 70px;
+    padding: 10px;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    transition: .2s;
+}
+
+span.my-contact:hover {
+    background-color: #363636;
+}
+
+span.my-contact img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+}

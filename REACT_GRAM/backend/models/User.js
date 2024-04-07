@@ -11,6 +11,7 @@ const userSchema = new Schema(
         posts: Array,
         followers: Array,
         following: Array,
+        lastSeen: Date,
     },
     {
         timestamps: true
