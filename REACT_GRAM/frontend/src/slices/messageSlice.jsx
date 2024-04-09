@@ -25,6 +25,21 @@ export const getAllContacts = createAsyncThunk(
     }
 )
 
+export const getMessageId = createAsyncThunk(
+    "message/chat",
+    async (id, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await messageService.getMessageId(id, token)
+
+        if(data.errors){
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+
+        return data
+    }
+)
+
 export const messageSlice = createSlice({
     name: "message",
     initialState,
@@ -43,6 +58,21 @@ export const messageSlice = createSlice({
             .addCase(getAllContacts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload
+            })
+            .addCase(getMessageId.pending, (state) => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(getMessageId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.error = null;
+                state.messages = action.payload;
+            })
+            .addCase(getMessageId.rejected, (state, action) => {
+                state.loading = false ;
+                state.error = action.payload;
+                state.messages = []
             })
     }
 })

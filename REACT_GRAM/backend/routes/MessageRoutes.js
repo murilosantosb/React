@@ -13,6 +13,6 @@ const {sendMessageValidation} = require("../middlewares/messageValidation")
 router.post("/sendmessage/:id", authGuard, sendMessageValidation(), sendMessage )
 router.get("/:id", authGuard, getAllContacts)
 router.delete("/:id", authGuard, deleteMessage)
-router.get("/:id", authGuard, getMessageId)
+router.get("/chat/:id", authGuard, getMessageId)
 
 module.exports = router

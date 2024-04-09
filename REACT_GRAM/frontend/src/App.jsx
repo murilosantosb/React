@@ -1,7 +1,7 @@
 // CSS
 import './App.css'
 //Router
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 //Pages
 import Home from './pages/Home/Home'
 import Register from './pages/Auth/Register'
@@ -25,10 +25,10 @@ import { useAuth } from './hooks/useAuth'
 function App() {
   const {auth, loading} = useAuth()
 
+
   if(loading){
     return <Loading/>
   }
-
 
   return(
     <div className='App'>

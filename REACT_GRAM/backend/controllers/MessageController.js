@@ -1,23 +1,28 @@
 const User = require("../models/User")
 const Message = require("../models/Message")
 const mongoose = require("mongoose")
-
+const { format } = require("date-fns")
 
 const sendMessage = async (req, res) => {
     try {
     const { message } = req.body
     const { id } = req.params
-    const user = req.user
+    const reqUser = req.user
+
+    const date = new Date()
+ 
+    const dateFormat = format(date, "dd/MM/yyyy HH:mm")
 
     const recipientUser = await User.findById(id)
 
     if(!recipientUser) {
         return res.status(404).json({ errors: ["Destinatário não encontrado"]})
     }
-    const newMessage = Message.create({
+    const newMessage = await Message.create({
         message: message,
-        sender: user._id ,
-        recipient: id
+        sender: reqUser._id,
+        recipient: id,
+        timestamp: dateFormat,
     })
 
     return res.status(201).json({message: "Mensagem foi criada com sucesso!", data: newMessage})
@@ -86,7 +91,7 @@ const getMessageId = async (req, res) => {
         // Busca as mensagens que o outro user me enviou
         const receivedMessages = await Message.find({ sender: id, recipient: reqUser._id })
 
-        const allMessages = [{sentMessages: sendMessage, receivedMessages: receivedMessages}]
+        const allMessages = [{sentMessages: sentMessages, receivedMessages: receivedMessages}]
 
         res.status(200).json(allMessages)
 

@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose
 
- 
+
+
 const MessageSchema = new Schema({
     message: {
         type: String,
@@ -9,18 +10,13 @@ const MessageSchema = new Schema({
     },
     sender: { // Quem está enviando a mensagem
         type: Schema.Types.ObjectId,
-        ref: "User",
         required: true
     },
     recipient: { // Quem está recebendo a mensagem
         type: Schema.Types.ObjectId,
-        ref: "User",
         required: true
     },
-    timestamp: {
-        type: Date,
-        default: Date.now
-    },
+    timestamp: String,
     status: {
         type: String, // status da mensagem "enviado, entregue e lido"
         enum: ["sent", "delivered", "read"], 

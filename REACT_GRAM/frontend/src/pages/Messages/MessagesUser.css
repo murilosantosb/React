@@ -37,8 +37,11 @@ section.info-user {
     align-content: center;
     margin: 0 auto;
     text-align: center;
-    width: 300px;
+    /* width: 60%; */
     margin-top: 10px;
+
+    border-left: 1px solid #363636;
+    border-right: 1px solid #363636;
 }
 
 section.info-user img {
@@ -56,6 +59,23 @@ section.info-user a {
 
 section.messages-users {
     height: 45vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+span.receivedMessage {
+    align-self: flex-start;
+    margin-left: 15px;
+}
+
+span.sentMessage {
+    align-self: flex-end;
+    margin-right: 15px;
 }
 
 form.form-message {
@@ -81,3 +101,82 @@ form.form-message > input {
 form.form-message svg {
     font-size: 1.5em;
 }
+
+@media (min-width: 800px) and (max-width: 1200px){
+
+
+section.info-user {
+     width: 80%;
+    border-left: 1px solid #363636;
+    border-right: 1px solid #363636; 
+}
+
+section.messages-users {
+    height: 45vh;
+
+    border-right: 1px solid #363636;
+    border-left: 1px solid #363636;
+    width: 80%;
+    margin: 0 auto;
+}
+    
+form.form-message {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 35px;
+}
+
+form.form-message > input {
+    background-color: transparent;
+    outline: none;
+    border: 0;
+    width: 70%;
+    font-size: 1.3em;
+    margin-top: 10px;
+}
+
+form.form-message svg {
+    font-size: 1.5em;
+    
+}
+
+}
+
+@media (min-width: 1201px){
+
+    section.info-user {
+        width: 60%;
+       border-left: 1px solid #363636;
+       border-right: 1px solid #363636; 
+   }
+
+    section.messages-users {
+        height: 45vh;
+    
+        border-right: 1px solid #363636;
+        border-left: 1px solid #363636;
+        width: 60%;
+        margin: 0 auto;
+    }
+        
+    form.form-message {
+        width: 60%;
+        margin: 0 auto;
+        margin-top: 35px;
+    }
+    
+    form.form-message > input {
+        background-color: transparent;
+        outline: none;
+        border: 0;
+        width: 70%;
+        font-size: 1.3em;
+        margin-top: 10px;
+    }
+    
+    form.form-message svg {
+        font-size: 1.5em;
+        
+    }
+    
+    }

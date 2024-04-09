@@ -8,7 +8,22 @@ const getAllContacts = async (id, token) => {
         .then((res) => res.json())
         .catch((err) => err)
 
-        return res
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+const getMessageId = async (id, token) => {
+    const config = requestConfig("GET", null, token)
+
+    try {
+        const res = await fetch(api + "/messages/chat/" + id, config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+            return res;
     } catch (error) {
         console.log(error)
     }
@@ -16,7 +31,8 @@ const getAllContacts = async (id, token) => {
 
 
 const messageService = {
-    getAllContacts
+    getAllContacts,
+    getMessageId
 }
 
 export default messageService 

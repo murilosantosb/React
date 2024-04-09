@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 
 // redux
 import {getUserDetails} from '../../slices/userSlice'
+import {getMessageId} from "../../slices/messageSlice"
 
 const MessagesUser = () => {
   const [message, setMessage] = useState("")
@@ -34,7 +35,14 @@ const MessagesUser = () => {
 
 
   const { user, loading, error } = useSelector(state => state.user)
+  const { messages, loading: messageLoading } = useSelector(state => state.message)
 
+  useEffect(() => {
+
+    dispatch(getMessageId(id))
+    // dispatch(getUserDetails(id))
+
+  }, [dispatch, id])
 
   if(loading){
     return <Loading/>
@@ -67,9 +75,25 @@ const MessagesUser = () => {
       </section>
 
       <section className="messages-users">
-        <span></span>
+        {/* Mensagens enviadas para mim */}
+        {messages.map((messageObj) => (
+          <>
+            {messageObj.receivedMessages.map((message) => (
+              <span key={message._id} className="receivedMessage">
+                <p>{message.message}</p>
+              </span>
+            ))}
 
-        <span></span>
+            {/* Mensagens que eu envio */}
+            {messageObj.sentMessages.map((message) => (
+              <span key={message._id} className="sentMessage">
+                <p>{message.message}</p>
+              </span>
+            ))
+            }
+          </>
+        ))
+        }
       </section>
 
           <form className="form-message">
@@ -94,3 +118,23 @@ const MessagesUser = () => {
 }
 
 export default MessagesUser
+
+
+/*
+
+ {messages.length > 0 && messages.map((content) => (
+          <span key={content._id}>
+              <p>{content.message}</p>
+          </span>
+        ))
+        }
+
+
+          {messages.sentMessages && messages.sentMessages.length > 0 && messages.sentMessages.map((content) => (
+            <span key={content._id}>
+                <p>{content.message}</p>
+            </span>
+          ))
+          }
+
+*/
