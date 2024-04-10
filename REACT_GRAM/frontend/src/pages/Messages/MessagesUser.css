@@ -1,5 +1,5 @@
 div.messages-container{
-
+    
 }
 
 div.messages-container header  {
@@ -30,6 +30,11 @@ div.messages-container header span.message-icons svg{
 }
 
 
+div.containerMessages {
+    height: 80vh;
+    overflow-y: auto;
+}
+
 section.info-user {
     display: flex;
     flex-direction: column;
@@ -57,7 +62,7 @@ section.info-user a {
 }
 
 
-section.messages-users {
+/* section.messages-users {
     height: 45vh;
     width: 100%;
     display: flex;
@@ -66,17 +71,96 @@ section.messages-users {
     flex-direction: column;
     flex-wrap: wrap;
     gap: 15px;
+
+    overflow-y: auto;
 }
 
 span.receivedMessage {
+    display: grid;
+    grid-template-columns: auto auto 150px;
+
     align-self: flex-start;
+    align-items: center;
     margin-left: 15px;
+    gap: 15px;
+}
+
+span.receivedMessage img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    grid-column-start: span 2;
+}
+
+span.receivedMessage h4 {
+    font-size: 16px;
+    font-weight: 400;
+
+}
+
+span.receivedMessage p {
+    
 }
 
 span.sentMessage {
     align-self: flex-end;
     margin-right: 15px;
-}
+} */
+
+section.messages-users {
+    height: 45vh;
+    max-height: 100%;
+    /* width: 100%; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-end;  */
+    align-items: center; 
+    padding: 10px; 
+    overflow-y: auto;
+  }
+  
+ 
+  span.receivedMessage {
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 10px;
+    margin-bottom: 10px; 
+  }
+  
+
+  span.receivedMessage img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+
+  span.receivedMessage h4 {
+    font-size: 16px;
+    margin: 0;
+  }
+  
+
+  span.sentMessage {
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    gap: 10px;
+    margin-bottom: 10px; 
+  }
+  
+  .delete {
+    display: none; 
+    cursor: pointer;
+  }
+  
+  span.receivedMessage:hover .delete,
+  span.sentMessage:hover .delete {
+    display: inline-block;
+  }
+  
+  
 
 form.form-message {
     display: flex;

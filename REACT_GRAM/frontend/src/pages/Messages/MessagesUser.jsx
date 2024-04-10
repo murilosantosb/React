@@ -11,6 +11,7 @@ import { CiCircleInfo } from "react-icons/ci";
 import { SiIconify } from "react-icons/si";
 import { TiMicrophoneOutline } from "react-icons/ti";
 import { GrGallery } from "react-icons/gr";
+import { GrClose } from "react-icons/gr";
 
 //Componentes
 import Loading from "../../components/Loading"
@@ -23,10 +24,12 @@ import { Link } from "react-router-dom";
 
 // redux
 import {getUserDetails} from '../../slices/userSlice'
-import {getMessageId} from "../../slices/messageSlice"
+import {getMessageId, sendMessage, deleteMessage} from "../../slices/messageSlice"
 
 const MessagesUser = () => {
   const [message, setMessage] = useState("")
+
+  const date = new Date()
 
 
   const { id } = useParams()
@@ -37,10 +40,28 @@ const MessagesUser = () => {
   const { user, loading, error } = useSelector(state => state.user)
   const { messages, loading: messageLoading } = useSelector(state => state.message)
 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if(message.length === 0 ){
+      return ""
+    }
+
+    const messageData = {
+      message: message,
+      id: id
+    }
+
+    await dispatch(sendMessage(messageData))
+
+    setMessage("")
+  }
+
   useEffect(() => {
 
     dispatch(getMessageId(id))
-    // dispatch(getUserDetails(id))
+    dispatch(getUserDetails(id))
 
   }, [dispatch, id])
 
@@ -65,6 +86,7 @@ const MessagesUser = () => {
           </span>
       </header>
 
+          <div className="containerMessages">
       <section className="info-user">
           {user.profileImage && (
             <img src={`${uploads}/users/${user.profileImage}`} alt={user.name} />
@@ -74,19 +96,33 @@ const MessagesUser = () => {
           <Link to={`/users/${id}`} className="btn unfollower">Ver perfil</Link>
       </section>
 
-      <section className="messages-users">
+      <section className="messages-users" >
         {/* Mensagens enviadas para mim */}
-        {messages.map((messageObj) => (
+        {Array.isArray(messages) && messages.map((messageObj) => (
           <>
-            {messageObj.receivedMessages.map((message) => (
+            {messageObj && messageObj.receivedMessages.map((message) => (
               <span key={message._id} className="receivedMessage">
-                <p>{message.message}</p>
+                <GrClose className="delete" onClick={() => dispatch(deleteMessage(message._id))}/>
+                {user.profileImage && (
+                  <img src={`${uploads}/users/${user.profileImage}`} alt="" />
+                )
+                }
+                <h4>{message.message}</h4>
+                {/* <p>{message.timestamp.slice(0,10)}</p> */}
+                {/* {date.getHours() > 23 ? (
+                  <p>{message.timestamp.slice(0,10)}</p>
+                )
+                : (
+                  <p>{message.timestamp.slice(11,16)}</p>
+                )
+                } */}
               </span>
             ))}
 
             {/* Mensagens que eu envio */}
-            {messageObj.sentMessages.map((message) => (
+            {messageObj && messageObj.sentMessages.map((message) => (
               <span key={message._id} className="sentMessage">
+                <GrClose className="delete" onClick={() => dispatch(deleteMessage(message._id))}/>
                 <p>{message.message}</p>
               </span>
             ))
@@ -95,8 +131,9 @@ const MessagesUser = () => {
         ))
         }
       </section>
+      </div>
 
-          <form className="form-message">
+          <form className="form-message" onSubmit={handleSubmit}>
             <SiIconify/>
               <input
               type="text"

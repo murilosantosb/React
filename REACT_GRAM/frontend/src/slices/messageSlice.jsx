@@ -25,6 +25,25 @@ export const getAllContacts = createAsyncThunk(
     }
 )
 
+export const sendMessage = createAsyncThunk(
+    "message/sendmessage",
+    async(messageData, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await messageService.sendMessage(
+            {message: messageData.message},
+            messageData.id,
+            token
+        )
+
+        if(data.errors){
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+
+        return data
+    }
+)
+
 export const getMessageId = createAsyncThunk(
     "message/chat",
     async (id, thunkAPI) => {
@@ -35,6 +54,17 @@ export const getMessageId = createAsyncThunk(
         if(data.errors){
             return thunkAPI.rejectWithValue(data.errors[0])
         }
+
+        return data
+    }
+)
+
+export const deleteMessage = createAsyncThunk(
+    "message/delete",
+    async(id, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await messageService.deleteMessage(id, token)
 
         return data
     }
@@ -72,6 +102,32 @@ export const messageSlice = createSlice({
             .addCase(getMessageId.rejected, (state, action) => {
                 state.loading = false ;
                 state.error = action.payload;
+                state.messages = []
+            })
+            .addCase(sendMessage.pending, (state) => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(sendMessage.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.error = false;
+                state.message = action.payload
+            })
+            .addCase(sendMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.message = {}
+            })
+            .addCase(deleteMessage.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.error = false;
+                state.messages = action.payload
+            })
+            .addCase(deleteMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload,
                 state.messages = []
             })
     }
