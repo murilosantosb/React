@@ -1,5 +1,4 @@
-// import { format } from 'date-fns'
-const { format } = require("date-fns")
+
 const User = require("../models/User")
 const mongoose = require("mongoose")
 
@@ -46,8 +45,6 @@ const register = async (req, res) => {
         res.status(422).json({errors: ["Houve um erro, por favor tente mais tarde."]})
     }
 
-    await User.findByIdAndUpdate(user, { lastSeen: new Date() })
-
     res.status(201).json({
         _id: newUser._id,
         token: generateToken(newUser._id)
@@ -71,11 +68,6 @@ const login = async (req, res) => {
         res.status(422).json({errors: ["Senha inválida."]})
         return
     }
-
-    const date = new Date()
-    const dateFormat = format(date, 'dd/MM/yyyy')
-
-    await User.findByIdAndUpdate(user, { lastSeen: dateFormat })
 
     //Return user with token
     res.status(201).json({

@@ -50,7 +50,7 @@ const deleteMessage = async (id, token) => {
 
     try {
         const res = await fetch(api + "/messages/" + id, config)
-            .then((res) => res.json)
+            .then((res) => res.json())
             .catch((err) => err)
 
             return res;

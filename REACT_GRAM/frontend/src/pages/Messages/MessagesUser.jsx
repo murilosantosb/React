@@ -29,9 +29,6 @@ import {getMessageId, sendMessage, deleteMessage} from "../../slices/messageSlic
 const MessagesUser = () => {
   const [message, setMessage] = useState("")
 
-  const date = new Date()
-
-
   const { id } = useParams()
 
   const dispatch = useDispatch()
@@ -40,22 +37,22 @@ const MessagesUser = () => {
   const { user, loading, error } = useSelector(state => state.user)
   const { messages, loading: messageLoading } = useSelector(state => state.message)
 
-
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if(message.length === 0 ){
-      return ""
-    }
+    if(message.trim() === "") return;
 
     const messageData = {
       message: message,
       id: id
     }
 
-    await dispatch(sendMessage(messageData))
-
+    dispatch(sendMessage(messageData))
     setMessage("")
+  }
+
+  const handleDeleteMessage = async (id) => {
+    await dispatch(deleteMessage(id))
   }
 
   useEffect(() => {
@@ -97,39 +94,19 @@ const MessagesUser = () => {
       </section>
 
       <section className="messages-users" >
-        {/* Mensagens enviadas para mim */}
-        {Array.isArray(messages) && messages.map((messageObj) => (
-          <>
-            {messageObj && messageObj.receivedMessages.map((message) => (
-              <span key={message._id} className="receivedMessage">
-                <GrClose className="delete" onClick={() => dispatch(deleteMessage(message._id))}/>
-                {user.profileImage && (
-                  <img src={`${uploads}/users/${user.profileImage}`} alt="" />
-                )
-                }
-                <h4>{message.message}</h4>
-                {/* <p>{message.timestamp.slice(0,10)}</p> */}
-                {/* {date.getHours() > 23 ? (
-                  <p>{message.timestamp.slice(0,10)}</p>
-                )
-                : (
-                  <p>{message.timestamp.slice(11,16)}</p>
-                )
-                } */}
-              </span>
-            ))}
-
-            {/* Mensagens que eu envio */}
-            {messageObj && messageObj.sentMessages.map((message) => (
-              <span key={message._id} className="sentMessage">
-                <GrClose className="delete" onClick={() => dispatch(deleteMessage(message._id))}/>
-                <p>{message.message}</p>
-              </span>
-            ))
-            }
-          </>
-        ))
-        }
+        {Array.isArray(messages) && messages.map((message) => (
+          <span key={message._id} className={message.sender === user._id ? "receivedMessage" : "sentMessage"}>
+            {message.sender !== user._id && (
+              <GrClose className="delete" onClick={() => handleDeleteMessage(message._id)}/>
+            )}
+            {message.sender === id && (
+              <img src={`${uploads}/users/${user.profileImage}`} alt={user.name} />
+            )}
+            <p>{message.message}</p>
+            <p className="timestamp">{message.timestamp}</p>
+          </span>
+        ))}
+        
       </section>
       </div>
 
@@ -139,6 +116,7 @@ const MessagesUser = () => {
               type="text"
               placeholder="Mensagem..."
               onChange={(e) => setMessage(e.target.value)}
+              value={message}
               />
             {message.length === 0 ? (
               <>
@@ -157,21 +135,39 @@ const MessagesUser = () => {
 export default MessagesUser
 
 
+
 /*
 
- {messages.length > 0 && messages.map((content) => (
-          <span key={content._id}>
-              <p>{content.message}</p>
-          </span>
-        ))
-        }
+{Array.isArray(messages) && messages.map((messageObj) => (
+          <>
+            {messageObj && messageObj.receivedMessages.map((message) => (
+              <span key={message._id} className="receivedMessage">
+                <GrClose className="delete" onClick={() => dispatch(deleteMessage(message._id))}/>
+                {user.profileImage && (
+                  <img src={`${uploads}/users/${user.profileImage}`} alt="" />
+                )
+                }
+                <h4>{message.message}</h4>
 
+                {/* {date.getHours() > 23 ? (
+                  <p>{message.timestamp.slice(0,10)}</p>
+                )
+                : (
+                  <p>{message.timestamp.slice(11,16)}</p>
+                )
+                } */
+          //       </span>
+          //     ))}
+  
+          //     {/* Mensagens que eu envio */}
+          //     {messageObj && messageObj.sentMessages.map((message) => (
+          //       <span key={message._id} className="sentMessage">
+          //         <GrClose className="delete" onClick={() => dispatch(deleteMessage(message._id))}/>
+          //         <p>{message.message}</p>
+          //       </span>
+          //     ))
+          //     }
+          //   </>
+          // ))
+          // }
 
-          {messages.sentMessages && messages.sentMessages.length > 0 && messages.sentMessages.map((content) => (
-            <span key={content._id}>
-                <p>{content.message}</p>
-            </span>
-          ))
-          }
-
-*/

@@ -64,9 +64,18 @@ export const deleteMessage = createAsyncThunk(
     async(id, thunkAPI) => {
         const token = thunkAPI.getState().auth.user.token
 
+        try {
         const data = await messageService.deleteMessage(id, token)
 
+        if(data.errors){
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+
         return data
+
+        } catch (error) {
+            throw new Error("Erro ao excluir a mensagem.")
+        }
     }
 )
 
@@ -111,19 +120,20 @@ export const messageSlice = createSlice({
             .addCase(sendMessage.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
-                state.error = false;
-                state.message = action.payload
+                state.error = null;
+                state.messages = state.messages.concat(action.payload.data)
             })
             .addCase(sendMessage.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                state.message = {}
+                state.messages = []
             })
             .addCase(deleteMessage.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
-                state.error = false;
-                state.messages = action.payload
+                state.error = null;
+                // state.messages = state.messages.filter(message => message._id !== action.payload.data)
+                state.messages = state.messages.filter(message => message._id !== action.payload._id)
             })
             .addCase(deleteMessage.rejected, (state, action) => {
                 state.loading = false;

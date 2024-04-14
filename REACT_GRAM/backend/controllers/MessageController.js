@@ -25,7 +25,7 @@ const sendMessage = async (req, res) => {
         timestamp: dateFormat,
     })
 
-    return res.status(201).json({message: "Mensagem foi criada com sucesso!", data: newMessage})
+    return res.status(201).json({message: "Mensagem foi criada com sucesso!", data:newMessage})
     } catch (error) {
         res.status(500).json({ errors: ["Erro ao enviar a mensagem"] })
     }
@@ -33,8 +33,7 @@ const sendMessage = async (req, res) => {
 
 
 const deleteMessage = async (req, res) => {
-    const { id } = req.params 
-    const reqUser = req.user
+    const { id } = req.params
     
     try {
         const myMessage = await Message.findById(new mongoose.Types.ObjectId(id))
@@ -44,9 +43,9 @@ const deleteMessage = async (req, res) => {
             return
         }
 
-        await Message.findByIdAndDelete(myMessage._id)
+        await Message.findByIdAndDelete(myMessage)
 
-        res.status(200).json({_id: myMessage._id , message: "Mensagem excluída com sucesso" })
+        res.status(200).json({_id: myMessage._id , message: "Mensagem excluída com sucesso"})
         
 
     } catch (error) {
@@ -70,7 +69,7 @@ const getAllContacts = async (req, res) => {
 
         const contactsData = await User.find({ _id: { $in: myContacts } })
             .select("_id name profileImage lastSeen")
-            .sort('-lastSeen')
+            .sort({ lastSeen: 1 })
 
         res.status(200).json(contactsData)
 
@@ -85,15 +84,14 @@ const getMessageId = async (req, res) => {
     const reqUser = req.user
 
     try {
-        // Busca as mensagens que eu enviei         
-        const sentMessages = await Message.find({ sender: reqUser._id, recipient: id })
+        const messages = await Message.find({
+            $or: [
+                { sender: reqUser._id, recipient: id },
+                { sender: id, recipient: reqUser._id }
+            ]
+        }).sort({ timestamp: 1 })
 
-        // Busca as mensagens que o outro user me enviou
-        const receivedMessages = await Message.find({ sender: id, recipient: reqUser._id })
-
-        const allMessages = [{sentMessages: sentMessages, receivedMessages: receivedMessages}]
-
-        res.status(200).json(allMessages)
+        res.status(200).json(messages)
 
     } catch (error) {
         res.status(404).json({ errors: ["Nenhuma mensagem foi encontrada!"]})
